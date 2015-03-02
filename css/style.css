@@ -1,0 +1,75 @@
+/*  Fonts  */
+@font-face{font-family:'Gotham Narrow Bold';src:url('fonts/GothamNarrow-Bold.otf') format('opentype')}
+@font-face{font-family:'Gotham Narrow Book';src:url('fonts/GothamNarrow-Book.otf') format('opentype')}
+@font-face{font-family:'Gotham Narrow Light';src:url('fonts/GothamNarrow-Light.otf') format('opentype')}
+@font-face{font-family:'Gotham Narrow Medium';src:url('fonts/GothamNarrow-Medium.otf') format('opentype')}
+
+/* Hummingbird resets  */
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,hr,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video {margin:0;padding:0;border:0;font-size:100%;font:inherit;outline:0;vertical-align:baseline;-webkit-font-smoothing:antialiased}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {display:block}
+html {background:white;font-size:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+body {min-height:100%;font:13px/18px Helvetica,Arial,sans-serif}
+table {border-collapse:collapse;border-spacing:0}
+td {vertical-align:top}
+input,select {vertical-align:middle}
+textarea,input,button {-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+nav ul,nav ol,nav li {margin:0;padding:0;list-style:none;list-style-image:none}
+img,a img {border:0}
+html>body img {*-ms-interpolation-mode:bicubic}
+a {color:#09f;outline:none}
+a:hover {outline:none}
+a:active {outline:none}
+a:link {-webkit-tap-highlight-color:#09f}
+/* Forms */
+legend {*margin-left:-7px}
+textarea {overflow:auto}
+input[type="radio"] {vertical-align:text-bottom}
+input[type="button"],input[type="submit"],input[type="image"],button {cursor:pointer}
+input[type="checkbox"] {vertical-align:bottom;*vertical-align:baseline}
+button,input,select,textarea {margin:0}
+input:invalid,textarea:invalid {background:#f0dddd}
+button {width:auto;overflow:visible}
+select,input,textarea,button {font:99% sans-serif}
+option,select {min-width:1.5em}
+/* Typography */
+html {-webkit-text-size-adjust:none}
+sub,sup {font-size:0.72em;line-height:0;position:relative}
+sup {top:-0.5em}
+sub {bottom:-0.25em}
+pre {padding:15px;white-space:pre;white-space:pre-wrap;white-space:pre-line;word-wrap:break-word}
+pre,code,kbd,samp {font-family:"Courier New",Courier,monospace,sans-serif}
+strong,th,b,h1,h2,h3,h4,h5,h6 {font-weight:bold}
+em {font-style:italic}
+h1,h2,h3,h4,h5,h6 {margin:0;font-weight:600;color:#9a9a9a;line-height:1.2}
+h1 {font-size:30px}
+h2 {font-size:26px}
+h3 {font-size:18px}
+h4 {font-size:14px}
+h5 {font-size:12px}
+h6 {font-size:11px;color:#999999;text-transform:uppercase}
+h4,h5,h6 {line-height:18px}
+h1 em,h2 em,h3 em,h4 em,h5 em,h6 em {font-style:normal;font-weight:normal;font-size:50%;color:#999;letter-spacing:-0.01em;white-space:nowrap}
+small {font-size:100%}
+ul,ol {padding-left:2em}
+ol li {list-style-type:decimal}
+ul li {list-style-type:disc}
+dl dt {font-weight:bold}
+dl dd {margin:0 0 15px 10px}
+hr {display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}
+ins {background-color:#ff9;color:#000;text-decoration:none;}
+mark {background-color:#ff9;color:#000;font-style:italic;font-weight:bold}
+del {text-decoration:line-through}
+blockquote,q {quotes:none;padding:15px}
+blockquote p:before,blockquote p:after,q:before,q:after {content:'"';}
+blockquote small {display:block;color:#999;text-align:right;font-size:1em}
+table {width:100%;text-align:left;border-collapse:collapse}
+table th {font-weight:bold;padding:5px;border:1px solid #ddd}
+table td {padding:5px;border:1px solid #ddd}
+p,dl,hr,ol,ul,pre,table,address,fieldset,blockquote {margin-bottom:20px}
+/* These selection declarations have to be separate */
+::-moz-selection {background:#09f;color:#fff;text-shadow:none}
+::selection {background:#09f;color:#fff;text-shadow:none}
+:focus {outline:0}
+/*  end of resets  */
+
+#app {padding:20px;}
