@@ -55,6 +55,18 @@ var router = (function($, Backbone, _, d3, undefined) {
         routePersonnel : function() {
             // list of all the people on hipchat
             console.log('navigating to people');
+            $.ajax({
+                url : '/data/personnel.json',
+                type : 'GET',
+                success : function(data) {
+                    var personnelRooms = new App.Collections.Personnel(data);
+                    this.personnel = new App.Views.Personnel({ collection: personnelRooms });
+                },
+                error : function(e) {
+                    alert('there was a problem getting the personnel data');
+                    router.navigate('/', {trigger:true});
+                }
+            });
         },
         routeRoom : function(id) {
             // go to the room with that id
@@ -63,14 +75,19 @@ var router = (function($, Backbone, _, d3, undefined) {
                 url : '/data/room.json',
                 type: 'GET',
                 success : function(data) {
-                    var roomData // get the data for then room
+                    console.log(data);
                     // get the collection of people in this room
+                    var roomStatus = new App.Models.Room(data);
+                    console.log(roomStatus);
+                    this.room = new App.Views.Room({ model : roomStatus });
                 },
                 error : function(e) {
-                    alert('there was an error getting the room data');
-                    router.navigate('lobby', {trigger:true});
+                    console.log(e);
+                    console.log('there was an error - bah!');
+                    //alert('there was an error getting the room data');
+                    //router.navigate('lobby', {trigger:true});
                 }
-            })
+            });
         },
         routePerson : function(id) {
             // go to the peron with that id

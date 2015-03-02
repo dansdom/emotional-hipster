@@ -18,6 +18,7 @@
         id : 'landing-tiles',
         template : template('template-landing-page'),
         initialize : function() {
+            console.log('initialising: Landing');
             _.bindAll(this, 'render', 'showItemType', 'renderItem');  // every function that uses 'this' as the current object should be in here
             this.render();
         },
@@ -40,22 +41,65 @@
         }
     });
 
-    
+    // ******* Personnel Page
+    App.Views.Personnel = Backbone.View.extend({
+        type : 'Personnel',
+        tagName : 'ul',
+        id : 'personnel-tiles',
+        initialize : function() {
+            console.log('initialising: Personnel');
+            _.bindAll(this, 'render', 'addPerson', 'showPerson');
+            this.render();
+        },
+        render : function() {
+            this.$el.appendTo('#app');
+            this.collection.each(this.addPerson, this);
+            this.$el.append('<a href="/">home</a>');
+            return this;
+        },
+        addPerson : function(item) {
+            var personTile = new App.Views.PersonTile({ model: item});
+            this.$el.append(personTile.render().el);
+        },
+        showPerson : function() {
+            var personId = $(e.originalEvent.target).closest('div').attr('id').replace('person-', '');
+            console.log(personId);
+            router.navigate('person/' + personId, {trigger:true});
+        }
+    });
+
+    App.Views.PersonTile = Backbone.View.extend({
+        type : 'PersonTile',
+        tagName : 'li',
+        className : 'person-tile',
+        template : template('person-tile'),
+        initialize : function() {
+            console.log('initialising: PersonTile');
+            _.bindAll(this, 'render');
+        },
+        events : {
+        },
+        render : function() {
+            this.$el.html( this.template(this.model.toJSON()) );            
+            return this;  
+        }
+    });
+
     // ******* Lobby Page
     App.Views.Lobby = Backbone.View.extend({
-        type : 'LobbyView',
+        type : 'Lobby',
         tagName : 'ul',
         id : 'room-tiles',
         initialize : function() {
+            console.log('initialising: Lobby');
             _.bindAll(this, 'render', 'addRoom', 'showRoom');
             this.render();
         },
         events : {
-            //'click .home' : 'landingPage',
+            'click .home' : 'landingPage',
             'click .room-tile' : 'showRoom'
         },
         render : function() {
-            console.log('doing render');
             this.$el.appendTo('#app');
             this.collection.each(this.addRoom, this);
             this.$el.append('<a href="/">home</a>');
@@ -69,10 +113,11 @@
             var roomId = $(e.originalEvent.target).closest('div').attr('id').replace('room-', '');
             console.log(roomId);
             router.navigate('room/' + roomId, {trigger:true});
+        },
+        landingPage : function() {
+            router.navigate('/', {trigger:true});
         }
     });
-
-    
 
     // ******* Room Tile **********
     App.Views.RoomTile = Backbone.View.extend({
@@ -81,16 +126,50 @@
         className : 'room-tile',
         template : template('room-tile'),
         initialize : function() {
+            console.log('initialising: RoomTile');
             _.bindAll(this, 'render');
         },
         events : {
-            'click li' : 'showRoom'
         },
         render : function() {
-            this.$el.html( this.template(this.model.toJSON()) );
+            this.$el.html( this.template(this.model.toJSON()) );            
             return this;  
         }
     });
+
+    // Room view
+    App.Views.Room = Backbone.View.extend({
+        type : 'Room',
+        className : 'room-container',
+        template : template('room'),
+        initialize : function() {
+            console.log('initialising room');
+            _.bindAll(this, 'render');
+            this.render();
+        },
+        events : {
+            'click .member' : 'showProfile'
+        },
+        render : function() {
+            var modelData = this.model.toJSON(),
+                members = '';
+
+            this.$el.appendTo('#app');
+            this.$el.html( this.template(modelData) );
+            
+            _.each(modelData.members, function(value, key) {
+                members += '<li class="member">' + value.name + ' : <span>' + value.mood + '</span></li>'; 
+            });
+            // add the members to the interface
+            this.$el.find('.members').append(members);
+            return this;
+        },
+        showProfile : function() {
+            // show the details of that person
+            console.log('showing member profile');
+        }
+    });
+
 
 
 })(jQuery, Backbone, _, d3);

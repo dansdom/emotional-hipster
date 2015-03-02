@@ -32,9 +32,14 @@
         defaults : {id: 0, name: 'default', mood: 0}
     });
 
-    App.Collections.Personnel = Backbone.Colection.extend({
+    App.Collections.Personnel = Backbone.Collection.extend({
         model : App.Models.PersonTile
     });
+
+    App.Models.Room = Backbone.Model.extend({
+        defaults : {id: 0, name: 'default', mood: 0, members: []}
+    });
+
 
 
 })(jQuery, Backbone, _, d3);

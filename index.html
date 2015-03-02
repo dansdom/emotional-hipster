@@ -30,6 +30,20 @@
 			<span class="mood"><%= mood %></span>
 		</div>
 	</script>
+	<!-- room page -->
+	<script type="text/template" id="room">
+		<h2><%= name %></h2>
+		<span class="mood"><%= mood %></span>
+		<ul class="members">
+		</ul>
+	</script>
+	<!-- person tile -->
+	<script type="text/template" id="person-tile">
+		<div id="person-<%= id %>">
+			<h2><%= name %></h2>
+			<span class="mood"><%= mood %></span>
+		</div>
+	</script>
 
 	<div id="app"></div>
 

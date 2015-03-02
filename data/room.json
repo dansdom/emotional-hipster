@@ -1,0 +1,23 @@
+
+    {
+        "id" : 1,
+        "name" : "room 1",
+        "mood" : 0.4,
+        "members" : [
+            {
+                "id" : 1,
+                "name" : "person 1",
+                "mood" : 0.26
+            },
+            {
+                "id" : 2,
+                "name" : "person 2",
+                "mood" : -0.17
+            },
+            {
+                "id" : 3,
+                "name" : "person 3",
+                "mood" : 0.45
+            }
+        ]
+    }

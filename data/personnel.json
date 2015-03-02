@@ -1,0 +1,12 @@
+[
+    {
+        "id" : 1,
+        "name" : "person 1",
+        "mood" : -0.34
+    },
+    {
+        "id" : 2,
+        "name" : "person 2",
+        "mood" : -0.43
+    }
+]
