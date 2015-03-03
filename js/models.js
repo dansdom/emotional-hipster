@@ -27,6 +27,10 @@
         model : App.Models.RoomTile
     });
 
+    App.Models.Person = Backbone.Model.extend({
+        defaults : {id: 0, name: 'default', mood: 0, rooms: []}
+    });
+
     // person tiles models
     App.Models.PersonTile = Backbone.Model.extend({
         defaults : {id: 0, name: 'default', mood: 0}

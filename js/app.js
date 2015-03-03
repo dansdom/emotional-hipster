@@ -26,7 +26,7 @@
             'click .show-type' : 'showItemType'
         },
         render : function() {
-            this.$el.appendTo('#app');
+            this.$el.appendTo('#main-menu');
             this.collection.each(this.renderItem, this);
             return this;
         },
@@ -34,8 +34,13 @@
             this.$el.append(this.template(item.attributes));
         },
         showItemType : function(e) {
-            // get the value
-            var dataRoute = $(e.originalEvent.target).attr('data-route');
+            e.preventDefault();
+            var el = $(e.originalEvent.target),
+                // get the value
+                dataRoute = el.attr('href');
+
+            el.parent().siblings().removeClass('active');
+            el.parent().addClass('active');
             // navigate to route
             router.navigate(dataRoute, {trigger:true});
         }
@@ -51,6 +56,10 @@
             _.bindAll(this, 'render', 'addPerson', 'showPerson');
             this.render();
         },
+        events : {
+            'click .home' : 'landingPage',
+            'click .person-tile' : 'showPerson'
+        },
         render : function() {
             this.$el.appendTo('#app');
             this.collection.each(this.addPerson, this);
@@ -61,10 +70,13 @@
             var personTile = new App.Views.PersonTile({ model: item});
             this.$el.append(personTile.render().el);
         },
-        showPerson : function() {
-            var personId = $(e.originalEvent.target).closest('div').attr('id').replace('person-', '');
-            console.log(personId);
-            router.navigate('person/' + personId, {trigger:true});
+        showPerson : function(e) {
+            var roomId = $(e.originalEvent.target).closest('div').attr('id').replace('person-', '');
+            console.log(roomId);
+            router.navigate('person/' + roomId, {trigger:true});
+        },
+        landingPage : function() {
+            router.navigate('/', {trigger:true});
         }
     });
 
@@ -82,6 +94,39 @@
         render : function() {
             this.$el.html( this.template(this.model.toJSON()) );            
             return this;  
+        }
+    });
+
+    // Room view
+    App.Views.Person = Backbone.View.extend({
+        type : 'Person',
+        className : 'person-container',
+        template : template('person'),
+        initialize : function() {
+            console.log('initialising person');
+            _.bindAll(this, 'render', 'showRoom');
+            this.render();
+        },
+        events : {
+            'click .room' : 'showRoom'
+        },
+        render : function() {
+            var modelData = this.model.toJSON(),
+                rooms = '';
+
+            this.$el.appendTo('#app');
+            this.$el.html( this.template(modelData) );
+            
+            _.each(modelData.rooms, function(value, key) {
+                rooms += '<li class="room">' + value.name + ' : <span>' + value.mood + '</span></li>'; 
+            });
+            // add the members to the interface
+            this.$el.find('.rooms').append(rooms);
+            return this;
+        },
+        showRoom : function() {
+            // show the details of that person
+            console.log('showing room profile');
         }
     });
 

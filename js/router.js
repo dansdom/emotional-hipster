@@ -27,6 +27,7 @@ var router = (function($, Backbone, _, d3, undefined) {
             if (!this.landingPage) {
                 // render landing page
                 var landingCollection = new App.Collections.Landing([
+                        {type : 'home', route : ''},
                         {type : 'people', route : 'people'},
                         {type : 'rooms', route : 'lobby'}
                     ]);
@@ -78,19 +79,31 @@ var router = (function($, Backbone, _, d3, undefined) {
                     console.log(data);
                     // get the collection of people in this room
                     var roomStatus = new App.Models.Room(data);
-                    console.log(roomStatus);
                     this.room = new App.Views.Room({ model : roomStatus });
                 },
                 error : function(e) {
-                    console.log(e);
-                    console.log('there was an error - bah!');
                     //alert('there was an error getting the room data');
-                    //router.navigate('lobby', {trigger:true});
+                    router.navigate('lobby', {trigger:true});
                 }
             });
         },
         routePerson : function(id) {
-            // go to the peron with that id
+            // go to the person with that id
+            console.log('navigating to person id: ' + id);
+            $.ajax({
+                url : '/data/person.json',
+                type: 'GET',
+                success : function(data) {
+                    console.log(data);
+                    // get the collection of people in this room
+                    var personStatus = new App.Models.Person(data);
+                    this.person = new App.Views.Person({ model : personStatus });
+                },
+                error : function(e) {
+                    alert('there was an error getting the person data');
+                    router.navigate('lobby', {trigger:true});
+                }
+            });
         }
     });
 
