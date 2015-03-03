@@ -6,17 +6,47 @@
         {
             "id" : 1,
             "name" : "person 1",
-            "mood" : 0.26
+            "mood" : -0.34
         },
         {
             "id" : 2,
             "name" : "person 2",
-            "mood" : -0.17
+            "mood" : -0.24
         },
         {
             "id" : 3,
             "name" : "person 3",
-            "mood" : 0.45
+            "mood" : -0.33
+        },
+        {
+            "id" : 4,
+            "name" : "person 4",
+            "mood" : 0.24
+        },
+        {
+            "id" : 5,
+            "name" : "person 5",
+            "mood" : -0.14
+        },
+        {
+            "id" : 6,
+            "name" : "person 6",
+            "mood" : 0.74
+        },
+        {
+            "id" : 7,
+            "name" : "person 7",
+            "mood" : 0.4
+        },
+        {
+            "id" : 8,
+            "name" : "person 8",
+            "mood" : 0.38
+        },
+        {
+            "id" : 9,
+            "name" : "person 9",
+            "mood" : 0.65
         }
     ]
 }

@@ -69,6 +69,7 @@
             console.log('closing personnel');
             dispatcher.off('CloseView', this.close, this);
             this.$el.isotope('destroy');
+            $('#sort-controls').off().remove();
             this.remove();
         },
         events : {
@@ -90,10 +91,22 @@
             router.navigate('person/' + roomId, {trigger:true});
         },
         runIsotope : function() {
-            this.$el.isotope({
+            var container = this.$el.isotope({
                 itemSelector : 'li',
-                layoutMode: 'fitRows'
+                layoutMode: 'fitRows',
+                getSortData: {
+                    name : '.name',
+                    mood : '.mood'
+                }
             });
+            this.$el.after('<div id="sort-controls"><input type="button" class="btn" id="sort-name" value="Sort By Name" /><input type="button" class="btn" id="sort-mood" value="Sort By Mood" /></div>');
+            $('#sort-name').on('click', function() {
+                container.isotope({ sortBy: 'name' });
+            });
+            $('#sort-mood').on('click', function() {
+                container.isotope({ sortBy: 'mood' });
+            });
+
         }
     });
 

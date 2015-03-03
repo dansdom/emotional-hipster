@@ -2,11 +2,76 @@
     {
         "id" : 1,
         "name" : "room 1",
-        "mood" : 0.4
+        "mood" : -0.4
     },
     {
         "id" : 2,
         "name" : "room 2",
+        "mood" : -0.3
+    },
+    {
+        "id" : 3,
+        "name" : "room 3",
         "mood" : -0.2
+    },
+    {
+        "id" : 4,
+        "name" : "room 4",
+        "mood" : 0.8
+    },
+    {
+        "id" : 5,
+        "name" : "room 5",
+        "mood" : 0.7
+    },
+    {
+        "id" : 6,
+        "name" : "room 6",
+        "mood" : -0.2
+    },
+    {
+        "id" : 7,
+        "name" : "room 7",
+        "mood" : -0.8
+    },
+    {
+        "id" : 8,
+        "name" : "room 8",
+        "mood" : -0.42
+    },
+    {
+        "id" : 9,
+        "name" : "room 9",
+        "mood" : 0.44
+    },
+    {
+        "id" : 10,
+        "name" : "room 10",
+        "mood" : 0.48
+    },
+    {
+        "id" : 11,
+        "name" : "room 11",
+        "mood" : 0.34
+    },
+    {
+        "id" : 12,
+        "name" : "room 12",
+        "mood" : -0.11
+    },
+    {
+        "id" : 13,
+        "name" : "room 13",
+        "mood" : 0.13
+    },
+    {
+        "id" : 14,
+        "name" : "room 14",
+        "mood" : 0.88
+    },
+    {
+        "id" : 15,
+        "name" : "room 15",
+        "mood" : -0.78
     }
 ]
