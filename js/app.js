@@ -11,6 +11,9 @@
         return _.template($('#'+id).html());
     };
 
+    // http://stackoverflow.com/questions/9960353/backbone-js-how-to-clean-up-views-when-navigate-to-another-url
+    var dispatcher = _.clone(Backbone.Events);
+
     // ********* Landing Page ********
     App.Views.Landing = Backbone.View.extend({
         type : 'LandingView',
@@ -19,6 +22,7 @@
         template : template('template-landing-page'),
         initialize : function() {
             console.log('initialising: Landing');
+            
             _.bindAll(this, 'render', 'showItemType', 'renderItem');  // every function that uses 'this' as the current object should be in here
             this.render();
         },
@@ -41,6 +45,9 @@
 
             el.parent().siblings().removeClass('active');
             el.parent().addClass('active');
+            // remove all the views except this one
+            dispatcher.trigger('CloseView');
+
             // navigate to route
             router.navigate(dataRoute, {trigger:true});
         }
@@ -53,17 +60,24 @@
         id : 'personnel-tiles',
         initialize : function() {
             console.log('initialising: Personnel');
-            _.bindAll(this, 'render', 'addPerson', 'showPerson');
+            dispatcher.trigger('CloseView');
+            dispatcher.on('CloseView', this.close, this);
+            _.bindAll(this, 'render', 'addPerson', 'showPerson', 'runIsotope');
             this.render();
         },
+        close : function() {
+            console.log('closing personnel');
+            dispatcher.off('CloseView', this.close, this);
+            this.$el.isotope('destroy');
+            this.remove();
+        },
         events : {
-            'click .home' : 'landingPage',
             'click .person-tile' : 'showPerson'
         },
         render : function() {
-            this.$el.appendTo('#app');
+            this.$el.appendTo('#page-content');
             this.collection.each(this.addPerson, this);
-            this.$el.append('<a href="/">home</a>');
+            this.runIsotope();
             return this;
         },
         addPerson : function(item) {
@@ -75,8 +89,11 @@
             console.log(roomId);
             router.navigate('person/' + roomId, {trigger:true});
         },
-        landingPage : function() {
-            router.navigate('/', {trigger:true});
+        runIsotope : function() {
+            this.$el.isotope({
+                itemSelector : 'li',
+                layoutMode: 'fitRows'
+            });
         }
     });
 
@@ -97,15 +114,22 @@
         }
     });
 
-    // Room view
+    // Person view
     App.Views.Person = Backbone.View.extend({
         type : 'Person',
         className : 'person-container',
         template : template('person'),
         initialize : function() {
             console.log('initialising person');
+            dispatcher.trigger('CloseView');
+            dispatcher.on('CloseView', this.close, this);
             _.bindAll(this, 'render', 'showRoom');
             this.render();
+        },
+        close : function() {
+            console.log('closing person');
+            dispatcher.off('CloseView', this.close, this);
+            this.remove();
         },
         events : {
             'click .room' : 'showRoom'
@@ -114,19 +138,22 @@
             var modelData = this.model.toJSON(),
                 rooms = '';
 
-            this.$el.appendTo('#app');
+            this.$el.appendTo('#page-content');
             this.$el.html( this.template(modelData) );
             
             _.each(modelData.rooms, function(value, key) {
-                rooms += '<li class="room">' + value.name + ' : <span>' + value.mood + '</span></li>'; 
+                rooms += '<li class="room" id="room-' + value.id + '">' + value.name + ' : <span>' + value.mood + '</span></li>'; 
             });
             // add the members to the interface
             this.$el.find('.rooms').append(rooms);
             return this;
         },
-        showRoom : function() {
+        showRoom : function(e) {
             // show the details of that person
             console.log('showing room profile');
+            var roomId = $(e.originalEvent.target).attr('id').replace('room-', '');
+            console.log(roomId);
+            router.navigate('room/' + roomId, {trigger:true});
         }
     });
 
@@ -137,17 +164,24 @@
         id : 'room-tiles',
         initialize : function() {
             console.log('initialising: Lobby');
-            _.bindAll(this, 'render', 'addRoom', 'showRoom');
+            dispatcher.trigger('CloseView');
+            dispatcher.on('CloseView', this.close, this);
+            _.bindAll(this, 'render', 'addRoom', 'showRoom', 'runIsotope');
             this.render();
         },
+        close : function() {
+            console.log('closing lobby');
+            dispatcher.off('CloseView', this.close, this);
+            this.$el.isotope('destroy');
+            this.remove();
+        },
         events : {
-            'click .home' : 'landingPage',
             'click .room-tile' : 'showRoom'
         },
         render : function() {
-            this.$el.appendTo('#app');
+            this.$el.appendTo('#page-content');
             this.collection.each(this.addRoom, this);
-            this.$el.append('<a href="/">home</a>');
+            this.runIsotope();
             return this;
         },
         addRoom : function(item) {
@@ -159,8 +193,12 @@
             console.log(roomId);
             router.navigate('room/' + roomId, {trigger:true});
         },
-        landingPage : function() {
-            router.navigate('/', {trigger:true});
+        runIsotope : function() {
+            console.log('running isotope');
+            this.$el.isotope({
+                itemSelector : 'li',
+                layoutMode: 'fitRows'
+            });
         }
     });
 
@@ -189,8 +227,14 @@
         template : template('room'),
         initialize : function() {
             console.log('initialising room');
-            _.bindAll(this, 'render');
+            dispatcher.trigger('CloseView');
+            dispatcher.on('CloseView', this.close, this);
+            _.bindAll(this, 'render', 'showProfile');
             this.render();
+        },
+        close : function() {
+            dispatcher.off('CloseView', this.close, this);
+            this.remove();
         },
         events : {
             'click .member' : 'showProfile'
@@ -199,19 +243,22 @@
             var modelData = this.model.toJSON(),
                 members = '';
 
-            this.$el.appendTo('#app');
+            this.$el.appendTo('#page-content');
             this.$el.html( this.template(modelData) );
             
             _.each(modelData.members, function(value, key) {
-                members += '<li class="member">' + value.name + ' : <span>' + value.mood + '</span></li>'; 
+                members += '<li class="member" id="person-' + value.id + '">' + value.name + ' : <span>' + value.mood + '</span></li>'; 
             });
             // add the members to the interface
             this.$el.find('.members').append(members);
             return this;
         },
-        showProfile : function() {
+        showProfile : function(e) {
             // show the details of that person
             console.log('showing member profile');
+            var personId = $(e.originalEvent.target).attr('id').replace('person-', '');
+            console.log(personId);
+            router.navigate('person/' + personId, {trigger:true});
         }
     });
 

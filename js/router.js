@@ -76,7 +76,6 @@ var router = (function($, Backbone, _, d3, undefined) {
                 url : '/data/room.json',
                 type: 'GET',
                 success : function(data) {
-                    console.log(data);
                     // get the collection of people in this room
                     var roomStatus = new App.Models.Room(data);
                     this.room = new App.Views.Room({ model : roomStatus });
@@ -94,7 +93,6 @@ var router = (function($, Backbone, _, d3, undefined) {
                 url : '/data/person.json',
                 type: 'GET',
                 success : function(data) {
-                    console.log(data);
                     // get the collection of people in this room
                     var personStatus = new App.Models.Person(data);
                     this.person = new App.Views.Person({ model : personStatus });

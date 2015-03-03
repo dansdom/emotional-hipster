@@ -99,7 +99,8 @@ a:link {-webkit-tap-highlight-color:#1b75bb}
 /* PAGE SPECIFIC
  * ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 /* Landing Page */
-#mesh {background:transparent url(img/mesh.png) repeat 0 0}
+
+.room-tile, .person-tile {list-style:none;display:block;float:left;width:100px;height:100px;background:#ccc;margin:5px;cursor:pointer;}
 
 
 /* PLUGINS (jQuery)  
