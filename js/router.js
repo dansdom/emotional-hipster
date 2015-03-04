@@ -106,8 +106,15 @@ var router = (function($, Backbone, _, d3, undefined) {
     });
 
     router = new App.Router();
-    Backbone.history.start();    
+    Backbone.history.start();  
 
+    router.on('route', function(route, params) {
+        if (route === 'routeHomepage') {
+            $('#page-content').html('<div id="corny"><img src="/img/corny.gif" /><p>(touchtherainbow)</p></div>');
+        } else if ($('#corny').length) {
+            $('#corny').remove();
+        }
+    });
     return router;
 
 })(jQuery, Backbone, _, d3);

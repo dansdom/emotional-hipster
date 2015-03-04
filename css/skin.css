@@ -100,8 +100,23 @@ a:link {-webkit-tap-highlight-color:#1b75bb}
  * ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 /* Landing Page */
 
-.room-tile, .person-tile {list-style:none;display:block;float:left;width:100px;height:100px;background:#ccc;margin:5px;cursor:pointer;}
+#corny {text-align:center;padding:20px;}
+.room-tile, .person-tile {list-style:none;display:block;float:left;width:140px;height:140px;margin:5px;cursor:pointer;border-radius:8px;}
+.room-tile h2, .person-tile h2 {font-size:16px;margin-bottom:10px;}
+#personnel-tiles, #room-tiles {padding:0;}
+.person-tile-pane, .room-tile-pane {width:100px;height:100px;padding:20px;background:rgba(0,0,0,0.1);transition:all ease 0.5s;border-radius:8px;box-shadow:1px 1px 5px 2px rgba(255,255,255,0.01);}
+.person-tile-pane:hover, .room-tile-pane:hover {box-shadow:1px 1px 5px 2px rgba(0,0,0,0.6);background:rgba(255,255,255,0.4);}
 
+.person-container, .room-container {}
+.person-container h2, .room-container h2 {margin-bottom:10px;font-size:18px;color:#1b75bb;}
+.person-container h2 span, .room-container h2 span {color:#000;font-weight:normal;}
+.person-container h3, .room-container h3 {margin-bottom:30px;font-size:16px;color:#1b75bb;}
+.person-container h3 span, .room-container h3 span {color:#000;font-weight:normal;}
+.person-container h4, .room-container h4 {color:#000;}
+.person-container ul, .room-container ul {padding:0;margin:0 0 30px;width:200px;}
+.person-container li, .room-container li {list-style:none;display:block;height:40px;line-height:40px;margin:5px 0;cursor:pointer;width:100%;border-radius:8px;}
+.person-container li > div, .room-container li > div {padding:0 10px;transition:all ease 0.5s;box-shadow:1px 1px 5px 2px rgba(255,255,255,0.01);border-radius:8px;}
+.person-container li > div:hover, .room-container li > div:hover {box-shadow:1px 1px 5px 2px rgba(0,0,0,0.6);background:rgba(255,255,255,0.4);} 
 
 /* PLUGINS (jQuery)  
  * ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */

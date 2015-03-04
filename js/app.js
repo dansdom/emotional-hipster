@@ -22,9 +22,11 @@
         template : template('template-landing-page'),
         initialize : function() {
             console.log('initialising: Landing');
-            
+            dispatcher.on('CloseView', this.close, this);
             _.bindAll(this, 'render', 'showItemType', 'renderItem');  // every function that uses 'this' as the current object should be in here
             this.render();
+        },
+        close : function() {
         },
         events : {
             'click .show-type' : 'showItemType'
@@ -32,10 +34,13 @@
         render : function() {
             this.$el.appendTo('#main-menu');
             this.collection.each(this.renderItem, this);
+            console.log('rendering landing');
+            $('#page-content').html('<div id="corny"><img src="/img/corny.gif" /><p>(touchtherainbow)</p></div>');
             return this;
         },
         renderItem : function(item) {
             this.$el.append(this.template(item.attributes));
+            this.$el.find('li:eq(0)').addClass('active');
         },
         showItemType : function(e) {
             e.preventDefault();
@@ -93,10 +98,15 @@
         runIsotope : function() {
             var container = this.$el.isotope({
                 itemSelector : 'li',
+                transitionDuration : '0.7s',
                 layoutMode: 'fitRows',
+                sortAscending : {
+                    name : true, 
+                    mood : false
+                },
                 getSortData: {
                     name : '.name',
-                    mood : '.mood'
+                    mood : '.mood parseFloat'
                 }
             });
             this.$el.after('<div id="sort-controls"><input type="button" class="btn" id="sort-name" value="Sort By Name" /><input type="button" class="btn" id="sort-mood" value="Sort By Mood" /></div>');
@@ -106,7 +116,6 @@
             $('#sort-mood').on('click', function() {
                 container.isotope({ sortBy: 'mood' });
             });
-
         }
     });
 
@@ -122,7 +131,12 @@
         events : {
         },
         render : function() {
-            this.$el.html( this.template(this.model.toJSON()) );            
+            this.$el.html( this.template(this.model.toJSON()) );
+            // make the background colour for the tile
+            // start 0,255,0 - end 255,0,0
+            var mood = parseFloat(this.model.toJSON().mood),
+                background = [ parseInt((-(mood*127.5) + 127.5)), parseInt(((mood*127.5) + 127.5)), 0];
+            this.$el.css('background-color', 'rgba(' + background[0] + ', ' + background[1] + ', ' + background[2] + ', 1)');        
             return this;  
         }
     });
@@ -142,6 +156,8 @@
         close : function() {
             console.log('closing person');
             dispatcher.off('CloseView', this.close, this);
+            $('#sort-controls').off().remove();
+            this.$el.isotope('destroy');
             this.remove();
         },
         events : {
@@ -155,18 +171,51 @@
             this.$el.html( this.template(modelData) );
             
             _.each(modelData.rooms, function(value, key) {
-                rooms += '<li class="room" id="room-' + value.id + '">' + value.name + ' : <span>' + value.mood + '</span></li>'; 
+                var mood = parseFloat(value.mood),
+                    background = [parseInt((-(mood*127.5) + 127.5)), parseInt(((mood*127.5) + 127.5)), 0],
+                color = 'rgba(' + background[0] + ', ' + background[1] + ', ' + background[2] + ', 1)';
+                rooms += '<li class="room" id="room-' + value.id + '" style="background-color:' + color + '"><div><span class="name">' + value.name + '</span> : <span class="mood">' + value.mood + '</span></div></li>';  
             });
+
             // add the members to the interface
             this.$el.find('.rooms').append(rooms);
+            this.runIsotope();
             return this;
         },
         showRoom : function(e) {
             // show the details of that person
             console.log('showing room profile');
-            var roomId = $(e.originalEvent.target).attr('id').replace('room-', '');
+            var room = $(e.originalEvent.target);
+            if (!room.hasClass('room')) {
+                room = room.parents('.room');
+            }
+            var roomId = room.attr('id').replace('room-', '');
             console.log(roomId);
             router.navigate('room/' + roomId, {trigger:true});
+        },
+        runIsotope : function() {
+            var container = this.$el.find('ul');
+            
+            container.isotope({
+                itemSelector : 'li',
+                transitionDuration : '0.7s',
+                layoutMode: 'fitRows',
+                sortAscending : {
+                    name : true, 
+                    mood : false
+                },
+                getSortData: {
+                    name : '.name',
+                    mood : '.mood parseFloat'
+                }
+            });
+            this.$el.after('<div id="sort-controls"><input type="button" class="btn" id="sort-name" value="Sort By Name" /><input type="button" class="btn" id="sort-mood" value="Sort By Mood" /></div>');
+            $('#sort-name').on('click', function() {
+                container.isotope({ sortBy: 'name' });
+            });
+            $('#sort-mood').on('click', function() {
+                container.isotope({ sortBy: 'mood' });
+            });
         }
     });
 
@@ -185,6 +234,7 @@
         close : function() {
             console.log('closing lobby');
             dispatcher.off('CloseView', this.close, this);
+            $('#sort-controls').off().remove();
             this.$el.isotope('destroy');
             this.remove();
         },
@@ -207,10 +257,25 @@
             router.navigate('room/' + roomId, {trigger:true});
         },
         runIsotope : function() {
-            console.log('running isotope');
-            this.$el.isotope({
+            var container = this.$el.isotope({
                 itemSelector : 'li',
-                layoutMode: 'fitRows'
+                transitionDuration : '0.7s',
+                layoutMode: 'fitRows',
+                sortAscending : {
+                    name : true, 
+                    mood : false
+                },
+                getSortData: {
+                    name : '.name',
+                    mood : '.mood parseFloat'
+                }
+            });
+            this.$el.after('<div id="sort-controls"><input type="button" class="btn" id="sort-name" value="Sort By Name" /><input type="button" class="btn" id="sort-mood" value="Sort By Mood" /></div>');
+            $('#sort-name').on('click', function() {
+                container.isotope({ sortBy: 'name' });
+            });
+            $('#sort-mood').on('click', function() {
+                container.isotope({ sortBy: 'mood' });
             });
         }
     });
@@ -228,7 +293,12 @@
         events : {
         },
         render : function() {
-            this.$el.html( this.template(this.model.toJSON()) );            
+            this.$el.html( this.template(this.model.toJSON()) );  
+            // make the background colour for the tile
+            // start 0,255,0 - end 255,0,0
+            var mood = parseFloat(this.model.toJSON().mood),
+                background = [ parseInt((-(mood*127.5) + 127.5)), parseInt(((mood*127.5) + 127.5)), 0];
+            this.$el.css('background-color', 'rgba(' + background[0] + ', ' + background[1] + ', ' + background[2] + ', 1)');     
             return this;  
         }
     });
@@ -247,6 +317,8 @@
         },
         close : function() {
             dispatcher.off('CloseView', this.close, this);
+            $('#sort-controls').off().remove();
+            this.$el.isotope('destroy');
             this.remove();
         },
         events : {
@@ -260,18 +332,51 @@
             this.$el.html( this.template(modelData) );
             
             _.each(modelData.members, function(value, key) {
-                members += '<li class="member" id="person-' + value.id + '">' + value.name + ' : <span>' + value.mood + '</span></li>'; 
+                var mood = parseFloat(value.mood),
+                    background = [parseInt((-(mood*127.5) + 127.5)), parseInt(((mood*127.5) + 127.5)), 0],
+                color = 'rgba(' + background[0] + ', ' + background[1] + ', ' + background[2] + ', 1)';
+
+                members += '<li class="member" id="person-' + value.id + '" style="background-color:' + color + '"><div><span class="name">' + value.name + '</span> : <span class="mood">' + value.mood + '</span></div></li>'; 
             });
             // add the members to the interface
             this.$el.find('.members').append(members);
+            this.runIsotope();
             return this;
         },
         showProfile : function(e) {
             // show the details of that person
             console.log('showing member profile');
-            var personId = $(e.originalEvent.target).attr('id').replace('person-', '');
+            var member = $(e.originalEvent.target);
+            if (!member.hasClass('member')) {
+                member = member.parents('.member');
+            }
+            var personId = member.attr('id').replace('person-', '');
             console.log(personId);
             router.navigate('person/' + personId, {trigger:true});
+        },
+        runIsotope : function() {
+            var container = this.$el.find('ul');
+            
+            container.isotope({
+                itemSelector : 'li',
+                transitionDuration : '0.7s',
+                layoutMode: 'fitRows',
+                sortAscending : {
+                    name : true, 
+                    mood : false
+                },
+                getSortData: {
+                    name : '.name',
+                    mood : '.mood parseFloat'
+                }
+            });
+            this.$el.after('<div id="sort-controls"><input type="button" class="btn" id="sort-name" value="Sort By Name" /><input type="button" class="btn" id="sort-mood" value="Sort By Mood" /></div>');
+            $('#sort-name').on('click', function() {
+                container.isotope({ sortBy: 'name' });
+            });
+            $('#sort-mood').on('click', function() {
+                container.isotope({ sortBy: 'mood' });
+            });
         }
     });
 
