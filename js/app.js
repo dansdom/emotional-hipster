@@ -157,7 +157,8 @@
             console.log('closing person');
             dispatcher.off('CloseView', this.close, this);
             $('#sort-controls').off().remove();
-            this.$el.isotope('destroy');
+            this.$el.find('ul').isotope('destroy');
+            $('#datepicker').datepicker('destroy');
             this.remove();
         },
         events : {
@@ -180,6 +181,7 @@
             // add the members to the interface
             this.$el.find('.rooms').append(rooms);
             this.runIsotope();
+            this.runDatepicker();
             return this;
         },
         showRoom : function(e) {
@@ -215,6 +217,15 @@
             });
             $('#sort-mood').on('click', function() {
                 container.isotope({ sortBy: 'mood' });
+            });
+        },
+        runDatepicker : function() {
+            $('#datepicker').datepicker({
+                maxDate: -1,
+                onSelect : function(e) {
+                    console.log(e);
+                    // get the data for that day
+                }
             });
         }
     });
@@ -318,7 +329,7 @@
         close : function() {
             dispatcher.off('CloseView', this.close, this);
             $('#sort-controls').off().remove();
-            this.$el.isotope('destroy');
+            this.$el.find('ul').isotope('destroy');
             this.remove();
         },
         events : {
